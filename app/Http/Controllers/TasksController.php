@@ -16,10 +16,10 @@ class TasksController extends Controller
     public function index()
     {
         // タスク一覧取得
-        $task = Task::all();
+        $tasks = Task::all();
         // タスク一覧ビューでそれを表示
          return view('tasks.index', [
-            'tasks' => $task,
+            'tasks' => $tasks,
     ]);
     
     }
