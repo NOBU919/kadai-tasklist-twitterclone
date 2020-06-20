@@ -21,7 +21,7 @@ class TasksController extends Controller
             $data = [];
             if (\Auth::check()) {
                 $user = \Auth::user();
-                $tasks = $user->tasklists()->orderBy('created_at', 'desc')->paginate(10);
+                $tasks = $user->tasks()->orderBy('created_at', 'desc')->paginate(10);
                 
                 $data = [
                 'user' => $user,
@@ -95,11 +95,18 @@ class TasksController extends Controller
     {
          // idの値でタスクを検索して取得
         $task = task::findOrFail($id);
-        
-        // メッセージ詳細ビューでそれを表示
-        return view('tasks.show', [
+        //一致していないと表示できない課題
+        if (\Auth::id() === $task->user_id) {
+            return view('tasks.show', [
             'task' => $task,
         ]);
+        }else {
+            return view('auth.login');
+        }
+        // メッセージ詳細ビューでそれを表示
+        //return view('tasks.show', [
+            //'task' => $task,
+        //]);
     }
 
     /**
